@@ -58,7 +58,9 @@ const showHeroInfo = (character) => {
   const stats = Object.keys(character.powerstats).map(stat => {
     return `<p>${statToemoji[stat]} ${stat.toUpperCase()}: ${nullToQuestionMarks(character.powerstats[stat])}</p>`;
   }).join('');
-  heroInfoDiv.innerHTML = `${name}${image}${stats}`;
+
+  heroImageDiv.innerHTML = `<img src="${character.image.url}" alt="">`;
+  heroNameDiv.innerHTML = `<h2>${character.name}</h2>`;
 };
 
 // get the superHero info from the superheros API
