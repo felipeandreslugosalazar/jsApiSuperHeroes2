@@ -95,7 +95,6 @@ const getSuperHeroes = (randomId, name) => {
 
 searchHeroInput.onkeyup = () => {
   if (searchHeroInput.value != '') {
-    heroInfoDiv.innerHTML = '';
     heroButtonDiv.innerHTML = 'Search Hero';
   } else {
     heroButtonDiv.innerHTML = 'Random Hero';
