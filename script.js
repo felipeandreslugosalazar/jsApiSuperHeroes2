@@ -4,7 +4,7 @@ const token = '10223569763528853';
 const baseUrl = `https://superheroapi.com/api.php/${token}`;
 
 // VARIABLES
-const heroeInfoDiv = document.getElementById('heroeInfo');
+const heroInfoDiv = document.getElementById('heroInfo');
 
 const heroImageDiv = document.getElementById('heroImage');
 const heroNameDiv = document.getElementById('heroName');
@@ -52,13 +52,13 @@ const nullToQuestionMarks = (stat) => {
   return stat == 'null' ? '¿?' : stat;
 };
 
-const showHeroeInfo = (character) => {
+const showHeroInfo = (character) => {
   const name = `<h2>${character.name}</h2>`;
-  const image = `<img src="${character.image.url}"height=300 alt="">`;
+  const image = `<img src="${character.image.url}" alt="">`;
   const stats = Object.keys(character.powerstats).map(stat => {
     return `<p>${statToemoji[stat]} ${stat.toUpperCase()}: ${nullToQuestionMarks(character.powerstats[stat])}</p>`;
   }).join('');
-  heroeInfoDiv.innerHTML = `${name}${image}${stats}`;
+  heroInfoDiv.innerHTML = `${name}${image}${stats}`;
 };
 
 // get the superHero info from the superheros API
@@ -68,7 +68,7 @@ const getSuperHeroes = (randomId, name) => {
   if (name == '') {
     fetchApi(`${baseUrl}/${randomId}`)
       .then(randomSuperHeroe => {
-        showHeroeInfo(randomSuperHeroe);
+        showHeroInfo(randomSuperHeroe);
       });
   }
   // search superHeroe by name(*)
@@ -78,9 +78,9 @@ const getSuperHeroes = (randomId, name) => {
       .then(searchSuperHeroesResponse => {
         if (searchSuperHeroesResponse.response == 'success') {
           let superHero = searchSuperHeroesResponse.results[0];
-          showHeroeInfo(superHero);
+          showHeroInfo(superHero);
         } else {
-          heroeInfoDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
+          heroInfoDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
         }
       });
   };
@@ -88,7 +88,7 @@ const getSuperHeroes = (randomId, name) => {
 
 searchHeroInput.onkeyup = () => {
   if (searchHeroInput.value != '') {
-    heroeInfoDiv.innerHTML = '';
+    heroInfoDiv.innerHTML = '';
     heroButtonDiv.innerHTML = 'Search Hero';
   } else {
     heroButtonDiv.innerHTML = 'Random Hero';
