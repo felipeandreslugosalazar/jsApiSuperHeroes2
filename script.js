@@ -67,17 +67,23 @@ const showHeroInfo = (character) => {
   heroNameDiv.innerHTML = `<h2>${character.name}</h2>`;
 };
 
-const superHeroMultipleResultsList = (length) => {
+const superHeroMultipleResultsList = (length, characters) => {
+  console.log(characters);
   let list = '';
-  for (i = 0; i <= length; i++) {
+
+  for (i = 0; i < length; i++) {
+    console.log(characters[i]);
     // list += `<a href="" onclick=superHeroOnDemand()>${i}</a>`;
     list += `<a class="superHeroOnDemand" onclick=superHeroOnDemand()>${i}</a>`;
   }
+
   return list;
 };
 
-const superHeroOnDemand = () => {
-  console.log('sikas!!!')
+const superHeroOnDemand = (character) => {
+  console.log(character.name);
+  // heroImageDiv.innerHTML = `<img src="${character.image.url}" alt="">`;
+  // heroNameDiv.innerHTML = `<h2>${character.name}</h2>`;
 };
 
 const setInitialHeroInfo = () => {
@@ -108,19 +114,17 @@ const getSuperHeroes = (randomId, name) => {
         if (searchSuperHeroesResponse.response == 'success' && superHeroMultipleResultsLenght == 1) {
           showHeroInfo(superHero);
         } else if (searchSuperHeroesResponse.response == 'success' && superHeroMultipleResultsLenght >= 1) {
-          heroMultipleResultsNotificationDiv.innerHTML = `There are ${superHeroMultipleResultsLenght} superheroes which name contains '${name}'.\n Keep on clicking search to randomly show more super heores with this name, or click on a number to see one of the results.`;
+          
+          heroMultipleResultsNotificationDiv.innerHTML = `There are ${superHeroMultipleResultsLenght} superheroes which name contains '${name}'.\n Keep on clicking search to randomly show more super heores with this name.`;
+
+          // or click on a number to see one of the results.
+          // console.log(superHeroMultipleResultsLenght == 1);
+          
           let randomSearchSuperHero = searchSuperHeroesResponse.results[randomNumber(superHeroMultipleResultsLenght)];
           showHeroInfo(randomSearchSuperHero);
-          heroMultipleResultsListDiv.innerHTML = `${superHeroMultipleResultsLenght}`;
-          heroMultipleResultsListDiv.innerHTML = superHeroMultipleResultsList(superHeroMultipleResultsLenght);
-
-          // heroOnDemandDiv.forEach(heroDiv => {
-          //   heroDiv.onclick = () => {
-          //     console.log('sdkbhsaldhabdhlasbdas');
-          //   }
-          // });
-
-
+          
+          // heroMultipleResultsListDiv.innerHTML = `${superHeroMultipleResultsLenght}`;
+          // heroMultipleResultsListDiv.innerHTML = superHeroMultipleResultsList(superHeroMultipleResultsLenght, searchSuperHeroesResponse.results);
 
         } else {
           heroInfoDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
