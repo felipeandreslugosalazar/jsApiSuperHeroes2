@@ -3,28 +3,33 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
   <link rel="stylesheet" href="style.css">
   <title>jsApiSuperHeroes</title>
 </head>
 
 <body>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <br>
+    <div class="text-center">
+      <h2>⭐ Super Hero App ⭐</h2>
+      <br>
+      <p>You can search for a super hero </p>
+      <p>- for example 'Thanos' or 'Silver surfer' -</p>
+      <p>... or you can generate a random super hero.</p>
+    </div>
+    <br>
+    <div>
+      <input type="text" id="searchHero">
+      <button id='heroButton'>Random Hero</button>
+    </div>
+    <br>
+    <div id="heroeInfo"></div>
 
-  <h2>⭐ Super Hero App ⭐</h2>
-  <p>You can search for a super hero </p>
-  <p>- for example 'Thanos' or 'Silver surfer' -</p>
-  <p>... or you can generate a random super hero.</p>
-
-  <br>
-  <input type="text" id="searchHero">
-  <button id='heroButton'>Random Hero</button>
-
-  <!-- <div id='heroName'></div>
-  <div id='heroImage'><img src="" alt=""></div>
-  <div id="heroePoweStats"></div>
-   -->
-  <div id="heroeInfo"></div>
-
+  </div>
   <script src="script.js"></script>
 </body>
 
