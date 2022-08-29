@@ -9,7 +9,11 @@ const heroInfoDiv = document.getElementById('heroInfo');
 const heroImageDiv = document.getElementById('heroImage');
 const heroNameDiv = document.getElementById('heroName');
 const heroePowerStatsDiv = document.getElementById('heroePowerStats');
+const heroMultipleResultsNotificationDiv = document.getElementById('heroMultipleResultsNotification');
+const heroMultipleResultsListDiv = document.getElementById('heroMultipleResultsList');
 const heroButtonDiv = document.getElementById('heroButton');
+
+const heroOnDemandDiv = document.querySelectorAll('.superHeroOnDemand');
 
 const searchHeroInput = document.getElementById('searchHero');
 // maxNumberSuperHeroes +1 to fecth from 1 to 371
@@ -63,6 +67,19 @@ const showHeroInfo = (character) => {
   heroNameDiv.innerHTML = `<h2>${character.name}</h2>`;
 };
 
+const superHeroMultipleResultsList = (length) => {
+  let list = '';
+  for (i = 0; i <= length; i++) {
+    // list += `<a href="" onclick=superHeroOnDemand()>${i}</a>`;
+    list += `<a class="superHeroOnDemand" onclick=superHeroOnDemand()>${i}</a>`;
+  }
+  return list;
+};
+
+const superHeroOnDemand = () => {
+  console.log('sikas!!!')
+};
+
 const setInitialHeroInfo = () => {
   heroImageDiv.innerHTML = '';
   heroNameDiv.innerHTML = '';
@@ -83,15 +100,34 @@ const getSuperHeroes = (randomId, name) => {
   else {
     fetchApi(`${baseUrl}/search/${name}`)
       .then(searchSuperHeroesResponse => {
-        if (searchSuperHeroesResponse.response == 'success') {
-          let superHero = searchSuperHeroesResponse.results[0];
+        // console.log(searchSuperHeroesResponse.response);
+        let superHeroMultipleResultsLenght = searchSuperHeroesResponse.results.length;
+        // console.log(superHeroMultipleResultsLenght);
+        // console.log(superHeroMultipleResultsLenght == 1);
+        let superHero = searchSuperHeroesResponse.results[0];
+        if (searchSuperHeroesResponse.response == 'success' && superHeroMultipleResultsLenght == 1) {
           showHeroInfo(superHero);
+        } else if (searchSuperHeroesResponse.response == 'success' && superHeroMultipleResultsLenght >= 1) {
+          heroMultipleResultsNotificationDiv.innerHTML = `There are ${superHeroMultipleResultsLenght} superheroes which name contains '${name}'.\n Keep on clicking search to randomly show more super heores with this name, or click on a number to see one of the results.`;
+          let randomSearchSuperHero = searchSuperHeroesResponse.results[randomNumber(superHeroMultipleResultsLenght)];
+          showHeroInfo(randomSearchSuperHero);
+          heroMultipleResultsListDiv.innerHTML = `${superHeroMultipleResultsLenght}`;
+          heroMultipleResultsListDiv.innerHTML = superHeroMultipleResultsList(superHeroMultipleResultsLenght);
+
+          // heroOnDemandDiv.forEach(heroDiv => {
+          //   heroDiv.onclick = () => {
+          //     console.log('sdkbhsaldhabdhlasbdas');
+          //   }
+          // });
+
+
+
         } else {
           heroInfoDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
         }
-      });
-  };
-}
+      })
+  }
+};
 
 searchHeroInput.onkeyup = () => {
   if (searchHeroInput.value != '') {
