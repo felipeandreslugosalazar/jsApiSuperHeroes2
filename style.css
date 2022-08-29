@@ -1,3 +1,12 @@
+body,
+html {
+  background-color: beige;
+}
+
+.wrapper {
+  width: 310px;
+}
+
 p {
   margin: 0;
   padding: 0;
@@ -5,4 +14,5 @@ p {
 
 img {
   height: 400px;
+  width: 100%;
 }

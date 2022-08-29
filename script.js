@@ -63,6 +63,11 @@ const showHeroInfo = (character) => {
   heroNameDiv.innerHTML = `<h2>${character.name}</h2>`;
 };
 
+const setInitialHeroInfo = () => {
+  heroImageDiv.innerHTML = '';
+  heroNameDiv.innerHTML = '';
+};
+
 // get the superHero info from the superheros API
 // using the randomNumber to get a"random" info
 const getSuperHeroes = (randomId, name) => {
@@ -101,3 +106,5 @@ heroButtonDiv.onclick = () => {
   let userInput = searchHeroInput.value;
   getSuperHeroes(randomNumber(maxNumberSuperHeroes), userInput);
 };
+
+setInitialHeroInfo();
