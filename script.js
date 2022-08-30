@@ -103,7 +103,7 @@ const getSuperHeroes = (randomId, name) => {
   if (name == '') {
     fetchApi(`${baseUrl}/${randomId}`)
       .then(randomSuperHeroe => {
-        console.log(randomSuperHeroe);
+        // console.log(randomSuperHeroe);
         showHeroInfo(randomSuperHeroe);
       });
   }
@@ -114,7 +114,13 @@ const getSuperHeroes = (randomId, name) => {
       .then(searchSuperHeroesResponse => {
 
         // if response is error
-        if (searchSuperHeroesResponse.response == 'error') {
+        const easterEggs = ['diego', 'Diego', 'Gunter', 'pinguino', 'pingüino'];
+        if (easterEggs.includes(name)) {
+          heroImageDiv.innerHTML = `<img src="./assets/images/gunter.webp" alt="">`;
+          let firstLetterCapitalize = name.charAt(0).toUpperCase() + name.slice(1);
+          heroNameDiv.innerHTML = `<h2>XX. ${firstLetterCapitalize}</h2>`;
+
+        } else if (searchSuperHeroesResponse.response == 'error') {
           heroImageDiv.innerHTML = '';
           heroNameDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
           heroMultipleResultsNotificationDiv.innerHTML = '';
@@ -128,14 +134,14 @@ const getSuperHeroes = (randomId, name) => {
           } else {
 
             let superHeroMultipleResults = searchSuperHeroesResponse.results;
-            console.log(superHeroMultipleResults);
+            // console.log(superHeroMultipleResults);
             let superHeroMultipleResultsLenght = superHeroMultipleResults.length;
-            console.log(superHeroMultipleResultsLenght);
+            // console.log(superHeroMultipleResultsLenght);
 
             heroMultipleResultsNotificationDiv.innerHTML = `<p>There are <strong>${superHeroMultipleResultsLenght}</strong> superHeroes which name contains '${name}'.\n Keep on clicking search to randomly show more superHeroes with this name.</p>`;
 
             let randomSuperHeroMultipleResultsId = randomNumber(superHeroMultipleResultsLenght);
-            console.log(randomSuperHeroMultipleResultsId);
+            // console.log(randomSuperHeroMultipleResultsId);
 
             showHeroInfo(superHeroMultipleResults[randomSuperHeroMultipleResultsId]);
           }
@@ -167,7 +173,7 @@ searchHeroInput.onkeyup = () => {
 }
 
 heroButtonDiv.onclick = () => {
-  console.log('heroButtonDiv.onclick');
+  // console.log('heroButtonDiv.onclick');
   let userInput = searchHeroInput.value;
   getSuperHeroes(randomNumber(maxNumberSuperHeroes), userInput);
 };
