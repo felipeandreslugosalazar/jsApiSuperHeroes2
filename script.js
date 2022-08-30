@@ -57,6 +57,11 @@ const nullToQuestionMarks = (stat) => {
 };
 
 const showHeroInfo = (character) => {
+
+  // console.log(character);
+  // console.log(character.name);
+  // console.log(character.image.url);
+
   const name = `<h2>${character.name}</h2>`;
   const image = `<img src="${character.image.url}" alt="">`;
   const stats = Object.keys(character.powerstats).map(stat => {
@@ -64,7 +69,7 @@ const showHeroInfo = (character) => {
   }).join('');
 
   heroImageDiv.innerHTML = `<img src="${character.image.url}" alt="">`;
-  heroNameDiv.innerHTML = `<h2>${character.name}</h2>`;
+  heroNameDiv.innerHTML = `<h2>${character.id}. ${character.name}</h2>`;
 };
 
 const superHeroMultipleResultsList = (length, characters) => {
@@ -87,8 +92,8 @@ const superHeroOnDemand = (character) => {
 };
 
 const setInitialHeroInfo = () => {
-  heroImageDiv.innerHTML = '';
-  heroNameDiv.innerHTML = '';
+  heroNameDiv.innerHTML = `<h2>¿?. ¿ SuperHero?</h2>`;
+  heroImageDiv.innerHTML = `<img src="./assets/images/misterX.png" alt="">`;
 };
 
 // get the superHero info from the superheros API
@@ -98,50 +103,71 @@ const getSuperHeroes = (randomId, name) => {
   if (name == '') {
     fetchApi(`${baseUrl}/${randomId}`)
       .then(randomSuperHeroe => {
+        console.log(randomSuperHeroe);
         showHeroInfo(randomSuperHeroe);
       });
   }
-  // search superHeroe by name(*)
-  // results are "all superHeroes with (*) in the name"
   else {
+    // search superHeroe by name(*)
+    // results are "all superHeroes with (*) in the name"
     fetchApi(`${baseUrl}/search/${name}`)
       .then(searchSuperHeroesResponse => {
-        // console.log(searchSuperHeroesResponse.response);
-        let superHeroMultipleResultsLenght = searchSuperHeroesResponse.results.length;
-        // console.log(superHeroMultipleResultsLenght);
-        // console.log(superHeroMultipleResultsLenght == 1);
-        let superHero = searchSuperHeroesResponse.results[0];
-        if (searchSuperHeroesResponse.response == 'success' && superHeroMultipleResultsLenght == 1) {
-          showHeroInfo(superHero);
-        } else if (searchSuperHeroesResponse.response == 'success' && superHeroMultipleResultsLenght >= 1) {
-          
-          heroMultipleResultsNotificationDiv.innerHTML = `There are ${superHeroMultipleResultsLenght} superheroes which name contains '${name}'.\n Keep on clicking search to randomly show more super heores with this name.`;
 
-          // or click on a number to see one of the results.
-          // console.log(superHeroMultipleResultsLenght == 1);
-          
-          let randomSearchSuperHero = searchSuperHeroesResponse.results[randomNumber(superHeroMultipleResultsLenght)];
-          showHeroInfo(randomSearchSuperHero);
-          
-          // heroMultipleResultsListDiv.innerHTML = `${superHeroMultipleResultsLenght}`;
-          // heroMultipleResultsListDiv.innerHTML = superHeroMultipleResultsList(superHeroMultipleResultsLenght, searchSuperHeroesResponse.results);
-
-        } else {
-          heroInfoDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
+        // if response is error
+        if (searchSuperHeroesResponse.response == 'error') {
+          heroImageDiv.innerHTML = '';
+          heroNameDiv.innerHTML = 'There is not a Super Hero withs this name 😫.';
+          heroMultipleResultsNotificationDiv.innerHTML = '';
         }
+        // if response is success
+        else {
+          // if response is success and results is 1
+          if (searchSuperHeroesResponse.results.length == 1) {
+            showHeroInfo(searchSuperHeroesResponse.results[0]);
+            // if response is success and results is more than 1
+          } else {
+
+            let superHeroMultipleResults = searchSuperHeroesResponse.results;
+            console.log(superHeroMultipleResults);
+            let superHeroMultipleResultsLenght = superHeroMultipleResults.length;
+            console.log(superHeroMultipleResultsLenght);
+
+            heroMultipleResultsNotificationDiv.innerHTML = `<p>There are <strong>${superHeroMultipleResultsLenght}</strong> superHeroes which name contains '${name}'.\n Keep on clicking search to randomly show more superHeroes with this name.</p>`;
+
+            let randomSuperHeroMultipleResultsId = randomNumber(superHeroMultipleResultsLenght);
+            console.log(randomSuperHeroMultipleResultsId);
+
+            showHeroInfo(superHeroMultipleResults[randomSuperHeroMultipleResultsId]);
+          }
+        }
+
+        //   // or click on a number to see one of the results.
+        //   // console.log(superHeroMultipleResultsLenght == 1);
+
+        //   showHeroInfo(randomSearchSuperHero);
+
+        //   // heroMultipleResultsListDiv.innerHTML = `${superHeroMultipleResultsLenght}`;
+        //   // heroMultipleResultsListDiv.innerHTML = superHeroMultipleResultsList(superHeroMultipleResultsLenght, searchSuperHeroesResponse.results);
       })
   }
-};
+}
 
 searchHeroInput.onkeyup = () => {
   if (searchHeroInput.value != '') {
     heroButtonDiv.innerHTML = 'Search Hero';
+    setInitialHeroInfo();
   } else {
     heroButtonDiv.innerHTML = 'Random Hero';
+    // heroInfoDiv.innerHTML = '';
+    heroImageDiv.innerHTML = '';
+    heroNameDiv.innerHTML = '';
+    heroMultipleResultsNotificationDiv.innerHTML = '';
+    setInitialHeroInfo();
   }
 }
 
 heroButtonDiv.onclick = () => {
+  console.log('heroButtonDiv.onclick');
   let userInput = searchHeroInput.value;
   getSuperHeroes(randomNumber(maxNumberSuperHeroes), userInput);
 };
